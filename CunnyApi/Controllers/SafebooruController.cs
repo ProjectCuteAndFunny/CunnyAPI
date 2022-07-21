@@ -47,7 +47,7 @@ public class SafebooruController : ControllerBase {
     }
 
     private static async Task<IEnumerable<SafebooruApiData>> GetData(string tags, int size, int skip) {
-        if (DateTime.UtcNow.Subtract(Cache.Item2) < TimeSpan.FromHours(1)) return Cache.Item1;
+        if (Cache.Item1.Count() >= size + skip && DateTime.UtcNow.Subtract(Cache.Item2) < TimeSpan.FromHours(1)) return Cache.Item1.Skip(skip).Take(size);
         
         string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
@@ -72,10 +72,10 @@ public class SafebooruController : ControllerBase {
             data.AddRange(raw!);
         }
 
-        Cache.Item1 = data.Skip(skip).Take(size);
+        Cache.Item1 = data;
         Cache.Item2 = DateTime.UtcNow;
 
-        return Cache.Item1;
+        return Cache.Item1.Skip(skip).Take(size);
     }
 
     private static (IEnumerable<SafebooruApiData>, DateTime) Cache = new();
