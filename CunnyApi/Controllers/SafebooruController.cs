@@ -12,7 +12,6 @@ namespace CunnyApi.v1.Controllers;
 [ApiController]
 public class SafebooruController : ControllerBase {
     public SafebooruController(ILogger<SafebooruController> logger) {
-        _httpClient = new();
         _logger = logger;
     }
 
@@ -47,14 +46,19 @@ public class SafebooruController : ControllerBase {
         });
     }
 
-    private async Task<IEnumerable<SafebooruApiData>> GetData(string tags, int size, int skip) {
+    private static async Task<IEnumerable<SafebooruApiData>> GetData(string tags, int size, int skip) {
+        if (DateTime.UtcNow.Subtract(Cache.Item2) < TimeSpan.FromHours(1)) return Cache.Item1;
+        
         string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         StringBuilder sb = new();
-        sb.Append("https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1");
-        Array.ForEach(splitTags, (elm) => {
-            sb.Append($"&tags={elm}");
-        });
+        if (tags.Length >= 1) {
+            sb.Append("https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1");
+            sb.Append($"&tags={splitTags[0]}");
+            Array.ForEach(splitTags[1..], (elm) => {
+                sb.Append($"+{elm}");
+            });
+        }
         string baseQuery = sb.ToString();
 
         List<SafebooruApiData> data = new();
@@ -68,9 +72,13 @@ public class SafebooruController : ControllerBase {
             data.AddRange(raw!);
         }
 
-        return data.Skip(skip).Take(size);
+        Cache.Item1 = data.Skip(skip).Take(size);
+        Cache.Item2 = DateTime.UtcNow;
+
+        return Cache.Item1;
     }
 
+    private static (IEnumerable<SafebooruApiData>, DateTime) Cache = new();
+    private static HttpClient _httpClient = new();
     private ILogger<SafebooruController> _logger;
-    private HttpClient _httpClient;
 }
