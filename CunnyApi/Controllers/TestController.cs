@@ -13,4 +13,8 @@ public class TestController : ControllerBase {
             testHeader
         };
     }
+    [HttpGet("niece")]
+    public async Task<string> GetNieceStory() {
+        return "No story for you, creep.";
+    }
 }

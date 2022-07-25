@@ -6,11 +6,11 @@ public class SafebooruApiData {
     /// <summary>
     /// Example value: 1202
     /// </summary>
-    public uint sample_height { get; init; }
+    public int sample_height { get; init; }
     /// <summary>
     /// Example value: 850
     /// </summary>
-    public uint sample_width { get; init; }
+    public int sample_width { get; init; }
     /// <summary>
     /// Example value: "3908"
     /// </summary>
@@ -18,7 +18,7 @@ public class SafebooruApiData {
     /// <summary>
     /// Example value: 0
     /// </summary>
-    public uint parent_id { get; init; }
+    public int parent_id { get; init; }
     /// <summary>
     /// Example value: "general"
     /// </summary>
@@ -38,11 +38,11 @@ public class SafebooruApiData {
     /// <summary>
     /// Example value: 4093
     /// </summary>
-    public uint height { get; init; }
+    public int height { get; init; }
     /// <summary>
     /// Example value: 1658323834
     /// </summary>
-    public uint change { get; init; }
+    public int change { get; init; }
     /// <summary>
     /// Example value: true
     /// </summary>
@@ -54,13 +54,13 @@ public class SafebooruApiData {
     /// <summary>
     /// Example value: 0
     /// </summary>
-    public uint? score { get; init; }
+    public int? score { get; init; }
     /// <summary>
     /// Example value: 2894
     /// </summary>
-    public uint width { get; init; }
+    public int width { get; init; }
     /// <summary>
     /// Example value: 4084251
     /// </summary>
-    public uint id { get; init; }
+    public int id { get; init; }
 }
