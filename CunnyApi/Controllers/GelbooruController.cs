@@ -47,15 +47,15 @@ public class GelbooruController : ControllerBase {
     }
 
     private static async Task<IEnumerable<GelbooruApiData>> GetData(string tags, int size, int skip) {
-        if (DateTime.UtcNow.Subtract(Cache.Item2) < TimeSpan.FromHours(1) && Cache.Item1.Count() >= size + skip) return Cache.Item1.Skip(skip).Take(size);
-        
+        if (Cache.Item1?.Count() >= size + skip && DateTime.UtcNow.Subtract(Cache.Item2) < TimeSpan.FromHours(1)) return Cache.Item1.Skip(skip).Take(size);
+
         string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         StringBuilder sb = new();
         if (tags.Length >= 1) {
             sb.Append("https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1");
             // Gelbooru needs an API key
-            sb.Append("&api_key=anonymous&user_id=9455");
+            //sb.Append("&api_key=anonymous&user_id=9455");
             sb.Append($"&tags={splitTags[0]}");
             Array.ForEach(splitTags[1..], (elm) => {
                 sb.Append($"+{elm}");
