@@ -1,6 +1,6 @@
 ﻿namespace CunnyApi.v1.External_APIs;
 
-public class YandereApiData
+public struct YandereApiData
 {
     public int id { get; set; }
     public string tags { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace CunnyApi.v1.External_APIs;
 
-public class DanbooruApiData
+public struct DanbooruApiData
 {
     public bool has_comments { get; set; }
     public int? parent_id { get; set; }

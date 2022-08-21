@@ -1,6 +1,6 @@
 ﻿namespace CunnyApi.v1.External_APIs;
 
-public class KonachanApiData
+public struct KonachanApiData
 {
     public int id { get; set; }
     public string tags { get; set; }

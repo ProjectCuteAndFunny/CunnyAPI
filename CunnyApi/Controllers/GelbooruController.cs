@@ -19,34 +19,34 @@ public class GelbooruController : ControllerBase {
     [Route("{tags}/{size}")]
     public async Task<IEnumerable<CunnyApiData>> Get(string tags, int size) {
         var data = await GetData(tags, size, 0);
-        return data.Select((elm) => elm.post.Select(post => new CunnyApiData {
-            post_url = $"https://gelbooru.com/index.php?page=post&s=view&id={post.id}",
-            image_url = $"https://gelbooru.com/images/{post.directory}/{post.image}",
-            tags = post.tags.Split(' ', StringSplitOptions.RemoveEmptyEntries),
-            owner_name = post.owner,
-            height = post.height,
-            width = post.width,
-            hash = post.md5,
-            id = post.id
-        })).SelectMany(x => x);
+        return data.Select((elm) => new CunnyApiData {
+            post_url = $"https://gelbooru.com/index.php?page=post&s=view&id={elm.id}",
+            image_url = $"https://gelbooru.com/images/{elm.directory}/{elm.image}",
+            tags = elm.tags.Split(' ', StringSplitOptions.RemoveEmptyEntries),
+            owner_name = elm.owner,
+            height = elm.height,
+            width = elm.width,
+            hash = elm.md5,
+            id = elm.id
+        });
     }
     [HttpGet]
     [Route("{tags}/{size};{skip}")]
     public async Task<IEnumerable<CunnyApiData>> Get(string tags, int size, int skip) {
         var data = await GetData(tags, size, skip);
-        return data.Select((elm) => elm.post.Select(post => new CunnyApiData {
-            post_url = $"https://gelbooru.com/index.php?page=post&s=view&id={post.id}",
-            image_url = $"https://gelbooru.com/images/{post.directory}/{post.image}",
-            tags = post.tags.Split(' ', StringSplitOptions.RemoveEmptyEntries),
-            owner_name = post.owner,
-            height = post.height,
-            width = post.width,
-            hash = post.md5,
-            id = post.id
-        })).SelectMany(x => x);
+        return data.Select((elm) => new CunnyApiData {
+            post_url = $"https://gelbooru.com/index.php?page=post&s=view&id={elm.id}",
+            image_url = $"https://gelbooru.com/images/{elm.directory}/{elm.image}",
+            tags = elm.tags.Split(' ', StringSplitOptions.RemoveEmptyEntries),
+            owner_name = elm.owner,
+            height = elm.height,
+            width = elm.width,
+            hash = elm.md5,
+            id = elm.id
+        });
     }
 
-    private static async Task<IEnumerable<GelbooruApiData>> GetData(string tags, int size, int skip) {
+    private static async Task<IEnumerable<GelbooruPostApiData>> GetData(string tags, int size, int skip) {
         if (Cache.Item1?.Count() >= size + skip && DateTime.UtcNow.Subtract(Cache.Item2) < TimeSpan.FromHours(1)) return Cache.Item1.Skip(skip).Take(size);
 
         string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -63,15 +63,15 @@ public class GelbooruController : ControllerBase {
         }
         string baseQuery = sb.ToString();
 
-        List<GelbooruApiData> data = new();
+        List<GelbooruPostApiData> data = new();
 
-        for (int i = 0; data.Count * 100 < size + skip; i++)
+        for (int i = 0; data.Count < size + skip; i++)
         {
             string result = await _httpClient.GetStringAsync($"{baseQuery}&pid={i}");
 
             var raw = JsonSerializer.Deserialize<GelbooruApiData>(result);
 
-            data.Add(raw!);
+            data.AddRange(raw!.post);
         }
 
         Cache.Item1 = data;
@@ -80,7 +80,7 @@ public class GelbooruController : ControllerBase {
         return Cache.Item1.Skip(skip).Take(size);
     }
 
-    private static (IEnumerable<GelbooruApiData>, DateTime) Cache = new();
+    private static (IEnumerable<GelbooruPostApiData>, DateTime) Cache = new();
     private static HttpClient _httpClient = new();
     private ILogger<GelbooruController> _logger;
 }

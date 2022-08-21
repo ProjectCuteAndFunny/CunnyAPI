@@ -2,7 +2,7 @@
 
 namespace CunnyApi.v1.External_APIs;
 
-public class SafebooruApiData {
+public struct SafebooruApiData {
     /// <summary>
     /// Example value: 1202
     /// </summary>

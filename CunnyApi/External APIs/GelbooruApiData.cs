@@ -2,7 +2,7 @@
 
 namespace CunnyApi.v1.External_APIs;
 
-public class GelbooruPostApiData {
+public struct GelbooruPostApiData {
     public string has_children { get; set; }
     public string has_comments { get; set; }
     public string preview_url { get; set; }
@@ -34,14 +34,14 @@ public class GelbooruPostApiData {
     public int id { get; set; }
 }
 
-public class GelbooruAttributesApiData
+public struct GelbooruAttributesApiData
 {
     public int limit { get; set; }
     public int offset { get; set; }
     public int count { get; set; }
 }
 
-public class GelbooruApiData
+public struct GelbooruApiData
 {
     [JsonPropertyName("@attributes")]
     public GelbooruAttributesApiData Attributes { get; set; }
