@@ -47,8 +47,6 @@ public class KonachanController : ControllerBase {
     }
 
     private static async Task<IEnumerable<KonachanApiData>> GetData(string tags, int size, int skip) {
-        if (Cache.Item1?.Count() >= size + skip && DateTime.UtcNow.Subtract(Cache.Item2) < TimeSpan.FromHours(1)) return Cache.Item1.Skip(skip).Take(size);
-        
         string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         StringBuilder sb = new();
@@ -73,13 +71,9 @@ public class KonachanController : ControllerBase {
             data.AddRange(raw!);
         }
 
-        Cache.Item1 = data;
-        Cache.Item2 = DateTime.UtcNow;
-
-        return Cache.Item1.Skip(skip).Take(size);
+        return data.Skip(skip).Take(size);
     }
 
-    private static (IEnumerable<KonachanApiData>, DateTime) Cache = new();
     private static HttpClient _httpClient = new();
     private ILogger<KonachanController> _logger;
 }
