@@ -46,7 +46,7 @@ public class GelbooruController : ControllerBase {
         });
     }
 
-    private static async Task<IEnumerable<GelbooruPostApiData>> GetData(string tags, int size, int skip) {
+    private async Task<IEnumerable<GelbooruPostApiData>> GetData(string tags, int size, int skip) {
         string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
         StringBuilder sb = new();
@@ -67,8 +67,15 @@ public class GelbooruController : ControllerBase {
         {
             string result = await _httpClient.GetStringAsync($"{baseQuery}&pid={i}");
 
+            _logger.LogWarning("{}", result);
+
             var raw = JsonSerializer.Deserialize<GelbooruApiData>(result);
 
+            // Don't trust the Gelbooru API
+            if (raw!.post is null) {
+                Response.StatusCode = StatusCodes.Status204NoContent;
+                return Enumerable.Empty<GelbooruPostApiData>();
+            }
             data.AddRange(raw!.post);
         }
 

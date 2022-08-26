@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CunnyApi</name>
+    </assembly>
+    <members>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.sample_height">
+            <summary>
+            Example value: 1202
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.sample_width">
+            <summary>
+            Example value: 850
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.directory">
+            <summary>
+            Example value: "3908"
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.parent_id">
+            <summary>
+            Example value: 0
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.rating">
+            <summary>
+            Example value: "general"
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.owner">
+            <summary>
+            Example value: "danbooru"
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.image">
+            <summary>
+            Example value: "02338c8b2339020a4d46ce4916766e1e0feb741f.jpg"
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.hash">
+            <summary>
+            Example value: "e07e63aca458e2daa5c6f2e06a3eb65b"
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.height">
+            <summary>
+            Example value: 4093
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.change">
+            <summary>
+            Example value: 1658323834
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.sample">
+            <summary>
+            Example value: true
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.tags">
+            <summary>
+            Example value: "1girl absurdres ahoge ailu_elf bangs bed bed_sheet black_skirt blue_archive blush commentary_request demon_girl demon_horns demon_wings forehead hair_ornament hairclip halo highres hina_(blue_archive) horns long_hair looking_at_viewer parted_bangs parted_lips pencil_skirt ponytail sidelocks simple_background sitting skirt sleeveless solo violet_eyes wariza white_hair wings zettai_ryouiki"
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.score">
+            <summary>
+            Example value: 0
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.width">
+            <summary>
+            Example value: 2894
+            </summary>
+        </member>
+        <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.id">
+            <summary>
+            Example value: 4084251
+            </summary>
+        </member>
+    </members>
+</doc>
