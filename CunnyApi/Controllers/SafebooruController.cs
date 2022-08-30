@@ -1,10 +1,8 @@
 ﻿using CunnyApi.v1.External_APIs;
 using CunnyApi.v1.Definitions;
+using CunnyApi.v1.Requests;
 
 using Microsoft.AspNetCore.Mvc;
-
-using System.Text.Json;
-using System.Text;
 
 namespace CunnyApi.v1.Controllers;
 
@@ -46,33 +44,23 @@ public class SafebooruController : ControllerBase {
         });
     }
 
-    private static async Task<IEnumerable<SafebooruApiData>> GetData(string tags, int size, int skip) {
-        string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-        StringBuilder sb = new();
-        if (tags.Length >= 1) {
-            sb.Append("https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1");
-            sb.Append($"&tags={splitTags[0]}");
-            Array.ForEach(splitTags[1..], (elm) => {
-                sb.Append($"+{elm}");
-            });
-        }
-        string baseQuery = sb.ToString();
-
+    private async Task<IEnumerable<SafebooruApiData>> GetData(string tags, int size, int skip) {
+        var request = new SafebooruRequest(tags);
         List<SafebooruApiData> data = new();
 
-        for (int i = 0; data.Count < size + skip; i++)
-        {
-            string result = await _httpClient.GetStringAsync($"{baseQuery}&pid={i}");
-
-            var raw = JsonSerializer.Deserialize<IEnumerable<SafebooruApiData>>(result);
+        for (int i = 0; data.Count < size + skip; i++) {
+            if (!request.TryGetJSON(i, out var raw)) {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return Enumerable.Empty<SafebooruApiData>();
+            }
 
             data.AddRange(raw!);
         }
 
+        await Task.CompletedTask;
+
         return data.Skip(skip).Take(size);
     }
 
-    private static HttpClient _httpClient = new();
-    private ILogger<SafebooruController> _logger;
+    private readonly ILogger<SafebooruController> _logger;
 }

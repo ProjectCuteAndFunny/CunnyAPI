@@ -1,10 +1,8 @@
 ﻿using CunnyApi.v1.External_APIs;
 using CunnyApi.v1.Definitions;
+using CunnyApi.v1.Requests;
 
 using Microsoft.AspNetCore.Mvc;
-
-using System.Text.Json;
-using System.Text;
 
 namespace CunnyApi.v1.Controllers;
 
@@ -47,41 +45,28 @@ public class GelbooruController : ControllerBase {
     }
 
     private async Task<IEnumerable<GelbooruPostApiData>> GetData(string tags, int size, int skip) {
-        string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-        StringBuilder sb = new();
-        if (tags.Length >= 1) {
-            sb.Append("https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1");
-            // Gelbooru needs an API key
-            //sb.Append("&api_key=anonymous&user_id=9455");
-            sb.Append($"&tags={splitTags[0]}");
-            Array.ForEach(splitTags[1..], (elm) => {
-                sb.Append($"+{elm}");
-            });
-        }
-        string baseQuery = sb.ToString();
-
+        var request = new GelbooruRequest(tags);
         List<GelbooruPostApiData> data = new();
 
-        for (int i = 0; data.Count < size + skip; i++)
-        {
-            string result = await _httpClient.GetStringAsync($"{baseQuery}&pid={i}");
-
-            _logger.LogWarning("{}", result);
-
-            var raw = JsonSerializer.Deserialize<GelbooruApiData>(result);
-
-            // Don't trust the Gelbooru API
-            if (raw!.post is null) {
-                Response.StatusCode = StatusCodes.Status204NoContent;
+        for (int i = 0; data.Count < size + skip; i++) {
+            if (!request.TryGetJSON(i, out var raw)) {
+                Response.StatusCode = StatusCodes.Status404NotFound;
                 return Enumerable.Empty<GelbooruPostApiData>();
             }
-            data.AddRange(raw!.post);
+
+            // Gelbooru always responds, but sometimes with an empty collection.
+            if (raw?.post is null) {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return Enumerable.Empty<GelbooruPostApiData>();
+            }
+            
+            data.AddRange(raw?.post!);
         }
+
+        await Task.CompletedTask;
 
         return data.Skip(skip).Take(size);
     }
 
-    private static HttpClient _httpClient = new();
-    private ILogger<GelbooruController> _logger;
+    private readonly ILogger<GelbooruController> _logger;
 }

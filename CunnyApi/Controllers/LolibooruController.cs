@@ -1,10 +1,8 @@
 ﻿using CunnyApi.v1.External_APIs;
 using CunnyApi.v1.Definitions;
+using CunnyApi.v1.Requests;
 
 using Microsoft.AspNetCore.Mvc;
-
-using System.Text.Json;
-using System.Text;
 
 namespace CunnyApi.v1.Controllers;
 
@@ -46,34 +44,23 @@ public class LolibooruController : ControllerBase {
         });
     }
 
-    private static async Task<IEnumerable<LoliBooruApiData>> GetData(string tags, int size, int skip) {
-        string[] splitTags = tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    private async Task<IEnumerable<LolibooruApiData>> GetData(string tags, int size, int skip) {
+        var request = new LolibooruRequest(tags);
+        List<LolibooruApiData> data = new();
 
-        StringBuilder sb = new();
-        if (tags.Length >= 1) {
-            // ?a is needed, else we get a 404
-            sb.Append("https://lolibooru.moe/post/index.json?a");
-            sb.Append($"&tags={splitTags[0]}");
-            Array.ForEach(splitTags[1..], (elm) => {
-                sb.Append($"+{elm}");
-            });
-        }
-        string baseQuery = sb.ToString();
-
-        List<LoliBooruApiData> data = new();
-
-        for (int i = 0; data.Count < size + skip; i++)
-        {
-            var result = await _httpClient.GetStreamAsync($"{baseQuery}&page={i}");
-
-            var raw = JsonSerializer.Deserialize<IEnumerable<LoliBooruApiData>>(result);
+        for (int i = 0; data.Count < size + skip; i++) {
+            if (!request.TryGetJSON(i, out var raw)) {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return Enumerable.Empty<LolibooruApiData>();
+            }
 
             data.AddRange(raw!);
         }
 
+        await Task.CompletedTask;
+
         return data.Skip(skip).Take(size);
     }
 
-    private static HttpClient _httpClient = new();
-    private ILogger<LolibooruController> _logger;
+    private readonly ILogger<LolibooruController> _logger;
 }

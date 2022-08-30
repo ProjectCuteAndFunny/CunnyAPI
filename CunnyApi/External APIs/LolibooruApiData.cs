@@ -1,7 +1,7 @@
 ﻿namespace CunnyApi.v1.External_APIs;
 
 // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
-public struct LoliBooruApiData
+public struct LolibooruApiData
 {
     public int id { get; set; }
     public string tags { get; set; }
