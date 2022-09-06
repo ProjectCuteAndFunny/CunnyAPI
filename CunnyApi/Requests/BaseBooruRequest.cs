@@ -1,7 +1,7 @@
-using System.Text;
 using System.Text.Json;
 
 using CunnyApi.v1.Globals;
+using CunnyApi.v1.External_APIs;
 
 namespace CunnyApi.v1.Requests;
 
@@ -28,8 +28,24 @@ public abstract class BaseBooruRequest {
             result = default;
             return false;
         }
+        if (!CheckJSON(json)) {
+            result = default;
+            return false;
+        }
 
         result = json;
         return true;
+    }
+
+    private bool CheckJSON<T>(in T json) {
+        return json switch {
+            GelbooruApiData data => data.post.Count() > 0,
+            IEnumerable<YandereApiData> data => data.Count() > 0,
+            IEnumerable<KonachanApiData> data => data.Count() > 0,
+            IEnumerable<DanbooruApiData> data => data.Count() > 0,
+            IEnumerable<LolibooruApiData> data => data.Count() > 0,
+            IEnumerable<SafebooruApiData> data => data.Count() > 0,
+            _ => false
+        };
     }
 }

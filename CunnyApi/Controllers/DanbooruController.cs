@@ -53,7 +53,7 @@ public class DanbooruController : ControllerBase {
                 Response.StatusCode = StatusCodes.Status404NotFound;
                 return Enumerable.Empty<DanbooruApiData>();
             }
-
+            
             data.AddRange(raw!);
         }
 
