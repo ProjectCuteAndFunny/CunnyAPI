@@ -37,7 +37,7 @@ public abstract class BaseBooruRequest {
         return true;
     }
 
-    private bool CheckJSON<T>(in T json) {
+    private bool CheckJSON<T>(in T? json) {
         return json switch {
             GelbooruApiData data => data.post.Count() > 0,
             IEnumerable<YandereApiData> data => data.Count() > 0,
