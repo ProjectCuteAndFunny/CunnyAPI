@@ -51,7 +51,7 @@ public class LolibooruController : ControllerBase {
         for (int i = 0; data.Count < size + skip; i++) {
             if (!request.TryGetJSON(i, out var raw)) {
                 Response.StatusCode = StatusCodes.Status404NotFound;
-                return Enumerable.Empty<LolibooruApiData>();
+                return data;
             }
 
             data.AddRange(raw!);

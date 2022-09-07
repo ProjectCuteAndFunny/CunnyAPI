@@ -51,13 +51,13 @@ public class GelbooruController : ControllerBase {
         for (int i = 0; data.Count < size + skip; i++) {
             if (!request.TryGetJSON(i, out var raw)) {
                 Response.StatusCode = StatusCodes.Status404NotFound;
-                return Enumerable.Empty<GelbooruPostApiData>();
+                return data;
             }
 
             // Gelbooru always responds, but sometimes with an empty collection.
             if (raw?.post is null) {
                 Response.StatusCode = StatusCodes.Status404NotFound;
-                return Enumerable.Empty<GelbooruPostApiData>();
+                return data;
             }
             
             data.AddRange(raw?.post!);
