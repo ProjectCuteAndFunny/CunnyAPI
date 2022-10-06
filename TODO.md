@@ -1,0 +1,2 @@
+- No rate-limiting impletented yet
+- Response caching from backing APIs used to be implemented, but not anymore

@@ -1,1 +1,3 @@
 # CunnyApi
+
+Documentation [here](docs/)

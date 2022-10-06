@@ -62,5 +62,5 @@ public class DanbooruController : ControllerBase {
         return data.Skip(skip).Take(size);
     }
 
-    private ILogger<DanbooruController> _logger;
+    private readonly ILogger<DanbooruController> _logger;
 }
