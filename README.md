@@ -1,4 +1,4 @@
-# CunnyApi
+# CunnyAPI
 
 Documentation [here](docs/)
 
