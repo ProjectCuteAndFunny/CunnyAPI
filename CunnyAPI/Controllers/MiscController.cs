@@ -9,7 +9,12 @@ namespace CunnyApi.v1.Controllers;
 public class MiscController : ControllerBase {
     [HttpGet]
     [Route("version")]
-    public Version Get() {
+    public Version GetVersion() {
         return BackendGlobals.ApiVersion;
+    }
+    [HttpGet]
+    [Route("latest")]
+    public string GetLatestRoute() {
+        return BackendGlobals.LatestVersionRoute;
     }
 }
