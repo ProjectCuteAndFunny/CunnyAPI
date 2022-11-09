@@ -9,10 +9,6 @@ namespace CunnyApi.v1.Controllers;
 [Route("api/v1/gelbooru")]
 [ApiController]
 public class GelbooruController : ControllerBase {
-    public GelbooruController(ILogger<GelbooruController> logger) {
-        _logger = logger;
-    }
-
     [HttpGet]
     [Route("{tags}/{size}")]
     public async Task<IEnumerable<CunnyApiData>> Get(string tags, int size) {
@@ -59,7 +55,7 @@ public class GelbooruController : ControllerBase {
                 Response.StatusCode = StatusCodes.Status404NotFound;
                 return data;
             }
-            
+
             data.AddRange(raw?.post!);
         }
 
@@ -67,6 +63,4 @@ public class GelbooruController : ControllerBase {
 
         return data.Skip(skip).Take(size);
     }
-
-    private readonly ILogger<GelbooruController> _logger;
 }

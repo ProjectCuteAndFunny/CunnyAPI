@@ -8,7 +8,8 @@ public class SafebooruRequest : BaseBooruRequest {
     public SafebooruRequest(string tags) {
         StringBuilder sb = new();
         sb.Append("https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1");
-        sb.Append($"&tags={tags.Replace(' ', '+')}");
+        sb.Append("&tags=");
+        sb.Append(tags.Replace(' ', '+'));
         _constructedUrl = sb.ToString();
     }
 

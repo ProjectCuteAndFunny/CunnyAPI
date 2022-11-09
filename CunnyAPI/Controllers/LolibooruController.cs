@@ -9,10 +9,6 @@ namespace CunnyApi.v1.Controllers;
 [Route("api/v1/lolibooru")]
 [ApiController]
 public class LolibooruController : ControllerBase {
-    public LolibooruController(ILogger<LolibooruController> logger) {
-        _logger = logger;
-    }
-
     [HttpGet]
     [Route("{tags}/{size}")]
     public async Task<IEnumerable<CunnyApiData>> Get(string tags, int size) {
@@ -61,6 +57,4 @@ public class LolibooruController : ControllerBase {
 
         return data.Skip(skip).Take(size);
     }
-
-    private readonly ILogger<LolibooruController> _logger;
 }

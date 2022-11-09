@@ -8,7 +8,8 @@ public class KonachanRequest : BaseBooruRequest {
     public KonachanRequest(string tags) {
         StringBuilder sb = new();
         sb.Append("https://konachan.net/post.json?a");
-        sb.Append($"&tags={tags.Replace(' ', '+')}");
+        sb.Append("&tags=");
+        sb.Append(tags.Replace(' ', '+'));
         _constructedUrl = sb.ToString();
     }
 

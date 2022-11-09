@@ -8,7 +8,8 @@ public class YandereRequest : BaseBooruRequest {
     public YandereRequest(string tags) {
         StringBuilder sb = new();
         sb.Append("https://yande.re/post.json?a");
-        sb.Append($"&tags={tags.Replace(' ', '+')}");
+        sb.Append("&tags=");
+        sb.Append(tags.Replace(' ', '+'));
         _constructedUrl = sb.ToString();
     }
 

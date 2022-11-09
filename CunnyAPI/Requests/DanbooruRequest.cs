@@ -8,7 +8,8 @@ public class DanbooruRequest : BaseBooruRequest {
     public DanbooruRequest(string tags) {
         StringBuilder sb = new();
         sb.Append("https://danbooru.donmai.us/post/index.json?a");
-        sb.Append($"&tags={tags.Replace(' ', '+')}");
+        sb.Append("&tags=");
+        sb.Append(tags.Replace(' ', '+'));
         _constructedUrl = sb.ToString();
     }
 

@@ -9,10 +9,6 @@ namespace CunnyApi.v1.Controllers;
 [Route("api/v1/yandere")]
 [ApiController]
 public class YandereController : ControllerBase {
-    public YandereController(ILogger<YandereController> logger) {
-        _logger = logger;
-    }
-
     [HttpGet]
     [Route("{tags}/{size}")]
     public async Task<IEnumerable<CunnyApiData>> Get(string tags, int size) {
@@ -61,6 +57,4 @@ public class YandereController : ControllerBase {
 
         return data.Skip(skip).Take(size);
     }
-
-    private readonly ILogger<YandereController> _logger;
 }

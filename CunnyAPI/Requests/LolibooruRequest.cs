@@ -8,7 +8,8 @@ public class LolibooruRequest : BaseBooruRequest {
     public LolibooruRequest(string tags) {
         StringBuilder sb = new();
         sb.Append("https://lolibooru.moe/post/index.json?a");
-        sb.Append($"&tags={tags.Replace(' ', '+')}");
+        sb.Append("&tags=");
+        sb.Append(tags.Replace(' ', '+'));
         _constructedUrl = sb.ToString();
     }
 

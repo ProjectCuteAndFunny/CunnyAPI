@@ -16,7 +16,7 @@ public abstract class BaseBooruRequest {
             result = default;
             return false;
         }
-        
+
         T? json;
         try {
             json = JsonSerializer.Deserialize<T>(response);
@@ -37,14 +37,14 @@ public abstract class BaseBooruRequest {
         return true;
     }
 
-    private bool CheckJSON<T>(in T? json) {
+    private static bool CheckJSON<T>(in T? json) {
         return json switch {
-            GelbooruApiData data => data.post.Count() > 0,
-            IEnumerable<YandereApiData> data => data.Count() > 0,
-            IEnumerable<KonachanApiData> data => data.Count() > 0,
-            IEnumerable<DanbooruApiData> data => data.Count() > 0,
-            IEnumerable<LolibooruApiData> data => data.Count() > 0,
-            IEnumerable<SafebooruApiData> data => data.Count() > 0,
+            GelbooruApiData data => data.post.Any(),
+            IEnumerable<YandereApiData> data => data.Any(),
+            IEnumerable<KonachanApiData> data => data.Any(),
+            IEnumerable<DanbooruApiData> data => data.Any(),
+            IEnumerable<LolibooruApiData> data => data.Any(),
+            IEnumerable<SafebooruApiData> data => data.Any(),
             _ => false
         };
     }

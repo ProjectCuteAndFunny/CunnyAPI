@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>CunnyApi</name>
+        <name>CunnyAPI</name>
     </assembly>
     <members>
         <member name="P:CunnyApi.v1.External_APIs.SafebooruApiData.sample_height">
