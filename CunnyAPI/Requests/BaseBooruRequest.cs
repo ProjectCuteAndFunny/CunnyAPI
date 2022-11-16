@@ -7,12 +7,17 @@ namespace CunnyApi.v1.Requests;
 
 public abstract class BaseBooruRequest {
     protected bool InternalTryGetJSON<T>(string url, out T? result) {
-        string response;
+        string? response;
         try {
             var task = BackendGlobals.HttpClient.GetStringAsync(url);
             task.Wait();
             response = task.Result;
         } catch (HttpRequestException) {
+            result = default;
+            return false;
+        }
+
+        if (response is null) {
             result = default;
             return false;
         }
@@ -37,7 +42,7 @@ public abstract class BaseBooruRequest {
         return true;
     }
 
-    private static bool CheckJSON<T>(in T? json) {
+    private static static bool CheckJSON<T>(in T? json) {
         return json switch {
             GelbooruApiData data => data.post.Any(),
             IEnumerable<YandereApiData> data => data.Any(),

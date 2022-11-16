@@ -40,13 +40,12 @@ public class YandereController : ControllerBase {
         });
     }
 
-    private async Task<IEnumerable<YandereApiData>> GetData(string tags, int size, int skip) {
+    private static async Task<IEnumerable<YandereApiData>> GetData(string tags, int size, int skip) {
         var request = new YandereRequest(tags);
         List<YandereApiData> data = new();
 
         for (int i = 0; data.Count < size + skip; i++) {
             if (!request.TryGetJSON(i, out var raw)) {
-                Response.StatusCode = StatusCodes.Status404NotFound;
                 return data;
             }
 

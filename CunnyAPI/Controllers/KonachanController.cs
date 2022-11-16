@@ -40,13 +40,12 @@ public class KonachanController : ControllerBase {
         });
     }
 
-    private async Task<IEnumerable<KonachanApiData>> GetData(string tags, int size, int skip) {
+    private static async Task<IEnumerable<KonachanApiData>> GetData(string tags, int size, int skip) {
         var request = new KonachanRequest(tags);
         List<KonachanApiData> data = new();
 
         for (int i = 0; data.Count < size + skip; i++) {
             if (!request.TryGetJSON(i, out var raw)) {
-                Response.StatusCode = StatusCodes.Status404NotFound;
                 return data;
             }
 

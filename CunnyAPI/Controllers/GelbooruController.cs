@@ -40,19 +40,17 @@ public class GelbooruController : ControllerBase {
         });
     }
 
-    private async Task<IEnumerable<GelbooruPostApiData>> GetData(string tags, int size, int skip) {
+    private static async Task<IEnumerable<GelbooruPostApiData>> GetData(string tags, int size, int skip) {
         var request = new GelbooruRequest(tags);
         List<GelbooruPostApiData> data = new();
 
         for (int i = 0; data.Count < size + skip; i++) {
             if (!request.TryGetJSON(i, out var raw)) {
-                Response.StatusCode = StatusCodes.Status404NotFound;
                 return data;
             }
 
             // Gelbooru always responds, but sometimes with an empty collection.
             if (raw?.post is null) {
-                Response.StatusCode = StatusCodes.Status404NotFound;
                 return data;
             }
 
