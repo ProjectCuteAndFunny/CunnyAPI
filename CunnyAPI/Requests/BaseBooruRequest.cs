@@ -42,7 +42,7 @@ public abstract class BaseBooruRequest {
         return true;
     }
 
-    private static static bool CheckJSON<T>(in T? json) {
+    private static bool CheckJSON<T>(in T? json) {
         return json switch {
             GelbooruApiData data => data.post.Any(),
             IEnumerable<YandereApiData> data => data.Any(),
